@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const router = express.Router();
 const  BMWProduct =require('../BMW_Models/bmw.models');
 const { errorMessages,endpoints } = require('../constants');
-
+const {sendResponse} =require('../utils/response')
 router.get('/',(req,res)=>{
     res.send('i am runing ')
 })
@@ -22,7 +22,12 @@ router.post(endpoints?.models,async(req,res)=>{
 router.get(endpoints?.models,async(req,res)=>{
     try {
         const bmwModels=await BMWProduct.find({});
-        res.status(200).json(bmwModels)
+        // res.status(200).json()
+        res.status(200).json({
+            data:bmwModels,
+            responseCode:"00",
+            message:"Success"
+        })
         
     } catch (err) {
         res.status(500).json({message:errorMessages?.unableToFetchModels})
@@ -84,28 +89,123 @@ router.get(`${endpoints?.search}`,async(req,res)=>{
 router.get(`${endpoints?.keys}`,async(req,res)=>{
     try {
         const keys=[
-            {key:"Brand",type:'isString'},
-            {key:"Model",type:'isString'},
-            {key:"AccelSec",type:'isNumber'},
-            {key:"TopSpeed_KmH",type:'isNumber'},
-            {key:"Range_Km",type:'isNumber'},
-            {key:"Efficiency_WhKm",type:'isNumber'},
-            {key:"FastCharge_KmH",type:'isNumber'},
-            {key:"RapidCharge",type:'isBoolean'},
-            {key:"PowerTrain",type:'isString'},
-            {key:"PlugType",type:'isString'},
-            {key:"BodyStyle",type:'isString'},
-            {key:"Segment",type:'isString'},
-            {key: "Seats", type: "isNumber" },
-            {key: "PriceEuro", type: "isNumber" },
-            {key: "Date", type: "isDate" },
+            {
+                headerName: 'Brand',
+              type: 'isString',
+              field: 'Brand',
+              sortable: true,
+              filter: true
+            },
+            {
+                headerName: 'Model',
+              type: 'isString',
+              field: 'Model',
+              sortable: true,
+              filter: true
+            },
+            {
+                headerName: 'Acceleration',
+              type: 'isNumber',
+              field: 'AccelSec',
+              sortable: true,
+              filter: true
+            },
+            {
+                headerName: 'Top Speed',
+              type: 'isNumber',
+              field: 'TopSpeed_KmH',
+              sortable: true,
+              filter: true
+            },
+            {
+                headerName: 'Range km/h',
+              type: 'isNumber',
+              field: 'Range_Km',
+              sortable: true,
+              filter: true
+            },
+            {
+                headerName: 'Efficiency',
+              type: 'isNumber',
+              field: 'Efficiency_WhKm',
+              sortable: true,
+              filter: true
+            },
+            {
+                headerName: 'Fast Charge',
+              type: 'isNumber',
+              field: 'FastCharge_KmH',
+              sortable: true,
+              filter: true
+            },
+            {
+                headerName: 'Rapid Charge',
+              type: 'isBoolean',
+              field: 'RapidCharge',
+              sortable: true,
+              filter: true
+            },
+            {
+                headerName: 'Power Train',
+              type: 'isString',
+              field: 'PowerTrain',
+              sortable: true,
+              filter: true
+            },
+            {
+                headerName: 'Plug Type',
+              type: 'isString',
+              field: 'PlugType',
+              sortable: true,
+              filter: true
+            },
+            {
+                headerName: 'Body Style',
+              type: 'isString',
+              field: 'BodyStyle',
+              sortable: true,
+              filter: true
+            },
+            {
+                headerName: 'Segment',
+              type: 'isString',
+              field: 'Segment',
+              sortable: true,
+              filter: true
+            },
+            {
+                headerName: 'Seats',
+              type: 'isNumber',
+              field: 'Seats',
+              sortable: true,
+              filter: true
+            },
+            {
+                headerName: 'Price Euro',
+              type: 'isNumber',
+              field: 'PriceEuro',
+              sortable: true,
+              filter: true
+            },
+            {
+                headerName: 'Date',
+              type: 'isDate',
+              field: 'Date',
+              sortable: true,
+              filter: true
+            }
+          ]
+          
+        // sendResponse(res,keys)\
+        // sendResponse(res, keys, "00", "Keys fetched successfully");
+        res.status(200).json({
+            data:keys,
+            responseCode:"00",
+            message:"Success"
+        })
 
-
-
-
-        ]
-        res.status(200).json(keys)
     } catch (error) {
+
         res.status(500).json({message:errorMessages?.unableToFetchModels})
     }
 })
@@ -113,4 +213,4 @@ router.get(`${endpoints?.keys}`,async(req,res)=>{
 
     
             //making the api for t
-            module.exports = router
+             module.exports = router
