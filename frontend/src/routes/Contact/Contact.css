@@ -1,0 +1,42 @@
+@import "../../Theme/color.scss";
+
+.contact-section {
+  padding: 50px;
+  text-align: center;
+}
+
+.contact-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: var(--primary-txt-color);
+}
+
+.contact-content p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  color: var(--secondary-txt-color);
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  max-width: 500px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  font-size: 1rem;
+  background-color: var(--Tonal-a10);
+}
+
+.contact-form button:hover {
+  background: #264653;
+}

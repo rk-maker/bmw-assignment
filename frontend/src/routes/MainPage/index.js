@@ -1,8 +1,16 @@
-import { themeQuartz } from "ag-grid-community";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, lazy, Suspense } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Fab } from "@mui/material";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import AGDataGrid from "../../components/AGDataGrid";
+import Header from "../../components/Header/Header";
+import Homepage from "../HomePage/HomePg";
+import SideBar from "../../components/Sidebar/SideBar";
+import { themeQuartz } from "ag-grid-community";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import About from "../About/About";
+import Contact from "../Contact/Contact";
 function MainPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -14,6 +22,14 @@ function MainPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [FilteringCriteria, setFilteringCriteria] = useState("");
   const [FilteringColumn, setFilteringColumn] = useState("");
+  const [isFloatingButtonVisible, setIsFloatingButtonVisible] = useState(false);
+  const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
+
+  const homeRef = useRef(null);
+  const exploreRef = useRef(null);
+  const aboutRef = useRef(null);
+  const contactRef = useRef(null);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -33,22 +49,6 @@ function MainPage() {
           }));
           setColumn(tempCol);
           getData(pageNo);
-          // try {
-          //   console.log(columnData?.data,"------")
-          //   const response2 =await fetch("http://localhost:3000/api/v1/bmw/models",{
-          //     method:'GET'
-          //   })
-          //   if(!response2){
-          //     throw new Error('Failed to fetch the data')
-          //   }
-          //   const rowData= await response2.json();
-          // if(rowData?.responseCode=="00"){
-          //   setRow(rowData?.data)
-          //   console.log(rowData?.data)
-          // }
-          // } catch (error) {
-          //   console.log("erro",error)
-          // }
         }
       } catch (error) {
         console.log("erro", error);
@@ -56,14 +56,41 @@ function MainPage() {
     };
     fetchData();
   }, []);
+  // Detect when the explore section is in view
 
-  // const onPaginationChanged=(param)=>{
-  //   const currentPage=param.api.paginationGetCurrentPage()
-  //   const newPage =currentPage+1;
-  //   if(newPage!== currentPage){
-  //     getData(newPage)
-  //   }
-  // }
+  useEffect(() => {
+    const handleScroll = () => {
+      if (exploreRef.current) {
+        const sectionTop = exploreRef.current.getBoundingClientRect().top;
+        const sectionBottom = exploreRef.current.getBoundingClientRect().bottom;
+        const windowHeight = window.innerHeight;
+
+        if (sectionTop <= windowHeight && sectionBottom >= 0) {
+          setIsFloatingButtonVisible(true);
+        } else {
+          setIsFloatingButtonVisible(false);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+  useEffect(() => {
+    const observer = new IntersectionObserver(observerCallback, {
+      root: null,
+      threshold: 0.5,
+    });
+
+    observer.observe(homeRef.current);
+    observer.observe(exploreRef.current);
+    observer.observe(aboutRef.current);
+    observer.observe(contactRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
   //paginated api for the bmwMode Data
   const getData = async (page) => {
     try {
@@ -88,6 +115,13 @@ function MainPage() {
       }
     } catch (error) {}
   };
+  const observerCallback = (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        setActiveSection(entry.target.id);
+      }
+    });
+  };
 
   // // to handle  next page in paginated api
   const handleNextPage = () => {
@@ -102,9 +136,42 @@ function MainPage() {
       getData(currentPage - 1);
     }
   };
+  const scrollToSection = (section) => {
+    let targetRef = null;
+
+    if (section === "home") {
+      targetRef = homeRef;
+    } else if (section === "explore") {
+      targetRef = exploreRef;
+    } else if (section === "about") {
+      targetRef = aboutRef;
+    } else if (section === "contact") {
+      targetRef = contactRef;
+    }
+
+    if (targetRef && targetRef.current) {
+      targetRef.current.scrollIntoView({ behavior: "smooth" });
+    } else {
+      console.warn(`Ref for section ${section} is not defined or available.`);
+    }
+  };
+
+  const toggleSideBar = () => {
+    setIsSideBarOpen(!isSideBarOpen);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
+      <Header scrollToSection={scrollToSection} activeSection={activeSection} />
+      <section ref={homeRef} id="home">
+        <Homepage />
+      </section>
+      <SideBar
+        column={column}
+        isOpen={isSideBarOpen}
+        toggleSideBar={toggleSideBar}
+      />
+      <section ref={exploreRef} id="explore">
         <AGDataGrid
           column={column}
           row={row}
@@ -113,7 +180,35 @@ function MainPage() {
           onPressPreviousPage={handlePreviousPage}
           onPressNextPage={handleNextPage}
         />
-      </header>
+      </section>
+      <section ref={aboutRef} id="about">
+        <Suspense fallback={<div>Loading About Section...</div>}>
+          <About />
+        </Suspense>
+      </section>
+      <section ref={contactRef} id="contact">
+        <Suspense fallback={<div>Loading Contact Section...</div>}>
+          <Contact />
+        </Suspense>
+      </section>
+      {isFloatingButtonVisible && (
+        <Fab
+          className="floating-button"
+          color="primary"
+          aria-label="scroll-to-top"
+          onClick={toggleSideBar}
+          style={{
+            position: "fixed",
+            bottom: "20px",
+            right: "20px",
+            zIndex: 1000,
+            color: "var(--primary-txt-color)",
+            background: "var(--primary-a30)",
+          }}
+        >
+          <FilterListIcon />
+        </Fab>
+      )}
     </div>
   );
 }

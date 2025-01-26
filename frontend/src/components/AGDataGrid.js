@@ -7,9 +7,9 @@ import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import { useNavigate } from "react-router-dom";
 import { setDetails } from "../redux/slices";
 import { FilterCriteria } from "../Utils/constants";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import Button from "@mui/material/Button";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import {
   ClientSideRowModelModule,
   NumberEditorModule,
@@ -25,6 +25,8 @@ import {
   PivotModule,
   SideBarModule,
 } from "ag-grid-enterprise";
+import FilterData from "./FilterData";
+import CustomButton from "./Button/Button";
 ModuleRegistry.registerModules([
   TextEditorModule,
   TextFilterModule,
@@ -55,39 +57,55 @@ const AGDataGrid = ({
 
   const [FilteringCriteria, setFilteringCriteria] = useState("");
   const [FilteringColumn, setFilteringColumn] = useState("");
+  const myTheme = themeQuartz.withParams({
+    accentColor: "var(--Tonal-a50)",
+    backgroundColor: "var(--Tonal-a10)",
+    borderColor: "var(--primary-a20)",
+    borderRadius: 20,
+    browserColorScheme: "dark",
+    cellHorizontalPaddingScale: 1,
+    chromeBackgroundColor: {
+      ref: "backgroundColor",
+    },
+    columnBorder: false,
+    fontFamily: {
+      googleFont: "Roboto",
+    },
+    fontSize: 16,
+    headerBackgroundColor: "var(--primary-a0)",
+    headerFontSize: 16,
+    headerFontWeight: 400,
+    headerTextColor: "var(--primary-txt-color)",
+    headerVerticalPaddingScale: 0.9,
+    iconSize: 20,
+    rowBorder: false,
+    rowVerticalPaddingScale: 1.2,
+    sidePanelBorder: false,
+    spacing: 8,
+    wrapperBorder: false,
+    wrapperBorderRadius: 0,
+    inputBorderRadius: 50,
+    textColor: "var(--secondary-txt-color)",
+  });
   const dynamicColumn = [
     ...column,
     {
       headerName: "Actions",
       field: "actions",
       cellRenderer: (params) => (
-        <div style={{ display: "flex", gap: "8px" }}>
-          <button
-            style={{
-              backgroundColor: "#1976d2",
-              color: "white",
-              border: "none",
-              borderRadius: "4px",
-              padding: "4px 8px",
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              handleRowClick(params);
-            }}
+        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+          <div
+            onClick={() => handleRowClick(params)}
+            style={{ cursor: "pointer" }}
           >
-            View
-          </button>
-          {/* <button
-            style={{
-              backgroundColor: "red",
-              color: "white",
-              border: "none",
-              borderRadius: "4px",
-              padding: "4px 8px",
-              cursor: "pointer",
-            }}
-            onClick={() => handleRowClick}
-          ></button> */}
+            <VisibilityIcon />
+          </div>
+          <div
+            onClick={() => handleRowClick(params)}
+            style={{ cursor: "pointer" }}
+          >
+            <DeleteForeverIcon />
+          </div>
         </div>
       ),
     },
@@ -107,65 +125,52 @@ const AGDataGrid = ({
   };
   return (
     <div>
-      <InputLabel id="demo-simple-select-label">Column</InputLabel>
-      <Select
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
-        value={FilteringColumn}
-        label="Age"
-        onChange={handleFilterColumn}
+      <div
+        style={{
+          height: 300,
+          width: "90%",
+          margin: "0 auto", // Center the grid horizontally
+        }}
       >
-        {column.map((item, index) => (
-          <MenuItem key={index} value={item.field}>
-            {item.headerName}
-          </MenuItem>
-        ))}
-      </Select>
-      <InputLabel id="demo-simple-select-label">Criteria</InputLabel>
-      <Select
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
-        value={FilteringCriteria}
-        label="Age"
-        onChange={handleFilterCriteria}
-      >
-        {FilterCriteria.map((item, index) => (
-          <MenuItem key={index} value={item?.value}>
-            {item?.value}
-          </MenuItem>
-        ))}
-      </Select>
-      <div style={{ height: 300, width: "70%" }}>
         <AgGridReact
-          theme={themeQuartz}
+          theme={myTheme}
           columnDefs={dynamicColumn}
           rowData={row}
           defaultColDef={{ flex: 1 }}
           animateRows={true}
         />
       </div>
-      <div className="flex items-center justify-between mb-4">
-        <button
+      {/* Button container */}
+      <div
+        className="flex items-center"
+        style={{
+          alignItems: "center",
+          display: "flex",
+          justifyContent: "flex-end", // Align content to the right
+          marginTop: "10px", // Space between grid and buttons
+          width: "90%", // Matches the grid width
+          marginLeft: "auto", // Centers the button container relative to grid
+          marginRight: "auto", // Centers the button container relative to grid
+          gap: "10px",
+        }}
+      >
+        <CustomButton
           onClick={onPressPreviousPage}
           disabled={currentPage === 1}
-          className={`px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-700 ${
-            currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+          width={"120px"}
         >
           Previous
-        </button>
-        <div className="text-lg">
+        </CustomButton>
+        <div className="text-lg" style={{ color: "var(--primary-txt-color)" }}>
           Page <strong>{currentPage}</strong> of <strong>{totalPages}</strong>
         </div>
-        <button
+        <CustomButton
           onClick={onPressNextPage}
+          width={"120px"}
           disabled={currentPage === totalPages}
-          className={`px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-700 ${
-            currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""
-          }`}
         >
           Next
-        </button>
+        </CustomButton>
       </div>
     </div>
   );

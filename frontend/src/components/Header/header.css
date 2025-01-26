@@ -1,0 +1,194 @@
+@import "../../Theme/color.scss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: var(--Tonal-a0);
+}
+
+/* Header styling */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 30px;
+  background: rgba(0, 0, 0, 0.7); /* Transparent background */
+  z-index: 1000; /* Ensure header stays above other elements */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Logo styling */
+.logo {
+  font-size: 25px;
+  color: var(--primary-txt-color);
+  text-decoration: none;
+  font-weight: 600;
+  opacity: 0;
+  animation: slideRight 1s ease forwards;
+}
+
+/* Navbar styling */
+.navbar a {
+  display: inline-block;
+  font-size: 18px;
+  color: var(--primary-txt-color);
+  text-decoration: none;
+  font-weight: 500;
+  margin: 0 15px;
+  opacity: 1; /* Ensure it's visible */
+  animation: slideTop 1s ease forwards;
+  animation-delay: calc(0.2s * var(--i));
+}
+
+.navbar a:hover {
+  color: var(--primary-a50);
+}
+
+/* Active link styling with animation */
+.navbar a.active {
+  color: var(--primary-a20);
+  font-weight: 600;
+  font-size: 22px;
+  text-decoration: none;
+  /* Remove the underline (border-bottom) */
+  border-bottom: none;
+  animation: activeAnimation 0.3s ease;
+  opacity: 1; /* Make sure the active link doesn't fade */
+  transform: scale(1.2); /* Add a slight scaling effect */
+}
+
+/* Social media icons */
+.social-media {
+  display: flex;
+  justify-content: space-between;
+  width: 150px;
+  height: 40px;
+}
+
+.social-media a {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 2px solid transparent;
+  text-decoration: none;
+  border-radius: 100%;
+  transition: 0.5s;
+  opacity: 0;
+  animation: SocialSide 0.5s ease forwards;
+  animation-delay: calc(0.2s * var(--i));
+}
+
+.social-media a:hover {
+  border-color: var(--primary-a20);
+  background-color: var(--primary-a0);
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    padding: 20px;
+    align-items: flex-start;
+  }
+
+  .logo {
+    font-size: 22px;
+    margin-bottom: 15px;
+  }
+
+  .navbar {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .navbar a {
+    font-size: 16px;
+    margin: 10px 0;
+  }
+
+  .social-media {
+    justify-content: center;
+    margin-top: 15px;
+    width: 100%;
+  }
+
+  .social-media a {
+    margin: 0 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    font-size: 20px;
+    opacity: 0;
+  }
+
+  .navbar a {
+    font-size: 14px;
+  }
+
+  .social-media a {
+    width: 35px;
+    height: 35px;
+    font-size: 1.2rem;
+  }
+}
+
+/* Animations */
+@keyframes slideRight {
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideTop {
+  0% {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes SocialSide {
+  0% {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes activeAnimation {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
