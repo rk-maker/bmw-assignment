@@ -2,7 +2,8 @@ const constants={
     errorMessages:{
         connectionError:'ConnectionError',
         genralError:"Unable to prcess at this time",
-        unableToFetchModels:'Unable to fetch Products'
+        unableToFetchModels:'Unable to fetch Products',
+        requiredParameter:'Required Parameters are not provided'
     },
     succesMessages:{
         modelAddition:'Model Added Succesfully'
@@ -14,7 +15,8 @@ const constants={
         models:'/models',
         pagination:'/pagination',
         search:'/search',
-        keys:'/keys'
+        keys:'/keys',
+        gridFilter:'/gridFilter'
 
     }
 }
