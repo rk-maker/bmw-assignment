@@ -46,6 +46,8 @@ router.get(`${endpoints?.pagination}`,async(req,res)=>
             const totalPages=Math.ceil(totalModels/limit)
             const remainingPages=totalPages-pageNo
             res.status(200).json({
+                 responseCode:"00",
+                 message:"Success",
                 totalPages,
                 currentPageNo:Number(pageNo),
                 remainingPages,
