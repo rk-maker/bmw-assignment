@@ -6,10 +6,10 @@ const  BMWProduct =require('../BMW_Models/bmw.models');
 const { errorMessages,endpoints } = require('../constants');
 const {sendResponse} =require('../utils/response')
 router.get('/',(req,res)=>{
-    res.send('i am runing ')
+    res.send('rest run')
 })
 
-
+//for adding row 
 router.post(endpoints?.models,async(req,res)=>{
         try {
                 const newAddedProduct=await BMWProduct.create(req.body)
@@ -34,8 +34,7 @@ router.get(endpoints?.models,async(req,res)=>{
         
     }
 })
-// paginated api to  fetch the large data 
-
+// paginated api to  fetch the large data it would be beneficail in the longer run 
 router.get(`${endpoints?.pagination}`,async(req,res)=>
     {
         try {
@@ -46,6 +45,8 @@ router.get(`${endpoints?.pagination}`,async(req,res)=>
             const totalPages=Math.ceil(totalModels/limit)
             const remainingPages=totalPages-pageNo
             res.status(200).json({
+                 responseCode:"00",
+                 message:"Success",
                 totalPages,
                 currentPageNo:Number(pageNo),
                 remainingPages,
@@ -59,9 +60,7 @@ router.get(`${endpoints?.pagination}`,async(req,res)=>
             
         }
     })
-
 //searching within the posiible string 
-
 router.get(`${endpoints?.search}`,async(req,res)=>{
 
     const {brand,model,bodyStyle}=req.query
@@ -84,7 +83,6 @@ router.get(`${endpoints?.search}`,async(req,res)=>{
     }
 
 })
-
 //api for getting the dynamic data 
 router.get(`${endpoints?.keys}`,async(req,res)=>{
     try {
@@ -209,8 +207,44 @@ router.get(`${endpoints?.keys}`,async(req,res)=>{
         res.status(500).json({message:errorMessages?.unableToFetchModels})
     }
 })
+//filter call  for the on the basis of crieteria
+router.get(`${endpoints?.gridFilter}`,async (req,res)=>{
+
+    const {column,value,criteria}=req.query;
+    if (!column|| !value || !criteria){
+        return res.status(400).json({message:errorMessages?.requiredParameter})
+    }
+    try {
+        const carData= await BMWProduct.find({})
+        let filteredData=carData
+        switch(criteria.toLowerCase()){
+            case 'contains':
+                filteredData=filteredData.filter(row=>row[column] && row[column].toLowerCase().includes(value.toLowerCase()))
+                break;
+            case 'equals':
+                filteredData=filteredData.filter(row=>row[column] && row[column].toLowerCase()===value.toLowerCase())
+                break;
+            case 'starts with':
+                filteredData=filteredData.filter(row=>row[column] && row[column].toLowerCase().startsWith(value.toLowerCase()))
+                break;
+            case 'ends with':
+                filteredData=filteredData.filter(row=>row[column] && row[column].toLowerCase().toLowerCase(value.toLowerCase()))
+                break;
+            case 'is empty':
+                filteredData=filteredData.filter(row=>!row[column] || row[column].toLowerCase().trim()==='')
+                break;
+            default:
+                return res.status(400).json({message:errorMessages?.unableToFetchModels})        
+            }
+
+            res.status(200).json(filteredData);
+
+    } catch (error) {
+        res.status(500).json({message:error.message})
+
+    }
+})
 
 
-    
-            //making the api for t
-             module.exports = router
+
+ module.exports = router

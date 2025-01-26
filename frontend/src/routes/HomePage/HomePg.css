@@ -1,0 +1,74 @@
+@import "../../Theme/color.scss";
+
+.home {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 50px 8% 0;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.home-content {
+  max-width: 630px;
+  color: var(--primary-txt-color);
+}
+
+.home-content h1 {
+  font-size: 50px;
+  line-height: 1.2;
+}
+
+.home-content h3 {
+  font-size: 30px;
+  color: var(--secondary-txt-color);
+}
+.home-content p {
+  color: var(--Tonal-a40);
+}
+
+.button {
+  padding-top: 15px;
+}
+
+.home-image {
+  position: relative;
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+  right: -10%;
+}
+
+.home-image .circle {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-txt-color);
+  border: 25px solid var(--Tonal-a10);
+  border-radius: 50%;
+  box-shadow: -15px 15px 15px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.home-image .circle img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home .circle2 {
+  top: -25%;
+  right: -25%;
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  background: var(--Tonal-a10);
+  z-index: -2;
+  border-radius: 1000px;
+}

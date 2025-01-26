@@ -1,0 +1,30 @@
+@import "../../Theme/color.scss";
+.about-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+  padding: 50px;
+  flex-wrap: wrap;
+}
+
+.about-content {
+  max-width: 500px;
+  text-align: left;
+}
+
+.about-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: var(--primary-txt-color);
+}
+.about-content p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--secondary-txt-color);
+}
+
+.about-image img {
+  width: 300px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
