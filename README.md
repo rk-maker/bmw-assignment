@@ -98,64 +98,6 @@ To run this project, you will need to add the following environment variables to
 
 `MONGO_CONNECTION_STRING="mongodb+srv://raffaykhan65:Zoro4250@bmwcluster.w2oot.mongodb.net/BMW_TEST?retryWrites=true&w=majority&appName=bmwCluster"`
 
-#### Folder Structure
-
-I follow a complete saturated system for organizing the folder structure, ensuring everything is easily accessible and logically grouped. Below is the folder structure for your reference:
-
-```
-📦src
- ┣ 📂assets
- ┃ ┗ 📜BMWBuilding.png
- ┣ 📂components
- ┃ ┣ 📂Button
- ┃ ┃ ┣ 📜Button.css
- ┃ ┃ ┗ 📜Button.js
- ┃ ┣ 📂Header
- ┃ ┃ ┣ 📜header.css
- ┃ ┃ ┗ 📜Header.js
- ┃ ┣ 📂Sidebar
- ┃ ┃ ┣ 📜SideBar.css
- ┃ ┃ ┗ 📜SideBar.js
- ┃ ┣ 📜AGDataGrid.js
- ┃ ┗ 📜FilterData.js
- ┣ 📂redux
- ┃ ┣ 📜slices.js
- ┃ ┗ 📜store.js
- ┣ 📂routes
- ┃ ┣ 📂About
- ┃ ┃ ┣ 📜About.css
- ┃ ┃ ┗ 📜About.js
- ┃ ┣ 📂BMWProductDetails
- ┃ ┃ ┣ 📜bmw-style.css
- ┃ ┃ ┗ 📜index.js
- ┃ ┣ 📂Contact
- ┃ ┃ ┣ 📜Contact.css
- ┃ ┃ ┗ 📜Contact.js
- ┃ ┣ 📂HomePage
- ┃ ┃ ┣ 📜HomePg.css
- ┃ ┃ ┗ 📜HomePg.js
- ┃ ┗ 📂MainPage
- ┃ ┃ ┗ 📜index.js
- ┣ 📂Theme
- ┃ ┗ 📜color.scss
- ┣ 📂Utils
- ┃ ┗ 📜constants.js
- ┣ 📜App.js
- ┣ 📜index.css
- ┣ 📜index.js
- ┗ 📜reportWebVitals.js
-```
-
-**/components**: This folder contains all the reusable components that make up the UI elements of the project.
-
-**/reducers**: This folder houses all the reducers, which are consumed by the context for dispatching actions across the application.
-
-**/routes**: All the page components for different routes and pages are organized here for easy navigation.
-
-**/theme**: This folder stores the color palettes, making it easy to manage and apply a consistent theme throughout the project.
-
-**/utils**: Contains constants, utility functions, and helper methods to promote reusability and maintainable code across the application.
-
 ### Folder Structure (Backend)
 
 ```
