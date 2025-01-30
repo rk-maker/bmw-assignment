@@ -73,6 +73,10 @@ const SideBar = ({ column, isOpen, toggleSideBar, applyFilter }) => {
       criteria: filteringCriteria,
       value: filteringValue,
     }); // Return values to parent
+    setFilteringValue("");
+    setFilteringCriteria([]);
+    setFilteringColumn([]);
+
     toggleSideBar(); // Close sidebar after applying filter
   };
   return (

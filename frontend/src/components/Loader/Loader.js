@@ -28,11 +28,11 @@ const styles = {
     zIndex: 9999,
   },
   loader: {
-    border: "8px solid #f3f3f3",
-    borderTop: "8px solid #3498db",
+    border: "2px solid #f3f3f3",
+    borderTop: "7px solid #035b74",
     borderRadius: "50%",
-    width: "50px",
-    height: "50px",
+    width: "100px",
+    height: "100px",
     animation: "spin 2s linear infinite",
   },
 };
