@@ -85,7 +85,7 @@ const AGDataGrid = ({
     sidePanelBorder: false,
     spacing: 8,
     wrapperBorder: false,
-    wrapperBorderRadius: 0,
+    wrapperBorderRadius: 15,
     inputBorderRadius: 50,
     textColor: "var(--secondary-txt-color)",
   });
@@ -127,8 +127,6 @@ const AGDataGrid = ({
   };
   return (
     <div>
-      <h1 className="explore-cars">Explore Cars</h1>
-
       <div
         style={{
           height: 300,
@@ -151,11 +149,11 @@ const AGDataGrid = ({
           style={{
             alignItems: "center",
             display: "flex",
-            justifyContent: "flex-end", // Align content to the right
-            marginTop: "10px", // Space between grid and buttons
-            width: "90%", // Matches the grid width
-            marginLeft: "auto", // Centers the button container relative to grid
-            marginRight: "auto", // Centers the button container relative to grid
+            justifyContent: "flex-end",
+            marginTop: "10px",
+            width: "90%",
+            marginLeft: "auto",
+            marginRight: "auto",
             gap: "10px",
           }}
         >
@@ -181,6 +179,7 @@ const AGDataGrid = ({
           </CustomButton>
         </div>
       ) : null}
+      <div style={{ height: "40px" }}></div>
     </div>
   );
 };

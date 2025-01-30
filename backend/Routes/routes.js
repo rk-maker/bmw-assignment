@@ -5,6 +5,7 @@ const router = express.Router();
 const BMWProduct = require("../BMW_Models/bmw.models");
 const { errorMessages, endpoints } = require("../constants");
 const { sendResponse } = require("../utils/response");
+const dataConstants = require("../constants/Data");
 router.get("/", (req, res) => {
   res.send("rest run");
 });
@@ -215,46 +216,85 @@ router.get(`${endpoints?.gridFilter}`, async (req, res) => {
   try {
     const carData = await BMWProduct.find({});
     let filteredData = carData;
-    switch (criteria.toLowerCase()) {
-      case "contains":
-        filteredData = filteredData.filter(
-          (row) =>
-            row[column] &&
-            row[column].toLowerCase().includes(value.toLowerCase())
-        );
-        break;
-      case "equals":
-        filteredData = filteredData.filter(
-          (row) =>
-            row[column] && row[column].toLowerCase() === value.toLowerCase()
-        );
-        break;
-      case "starts with":
-        filteredData = filteredData.filter(
-          (row) =>
-            row[column] &&
-            row[column].toLowerCase().startsWith(value.toLowerCase())
-        );
-        break;
-      case "ends with":
-        filteredData = filteredData.filter(
-          (row) =>
-            row[column] &&
-            row[column].toLowerCase().toLowerCase(value.toLowerCase())
-        );
-        break;
-      case "is empty":
-        filteredData = filteredData.filter(
-          (row) => !row[column] || row[column].toLowerCase().trim() === ""
-        );
-        break;
-      default:
-        return res
-          .status(400)
-          .json({ message: errorMessages?.unableToFetchModels });
-    }
 
-    res.status(200).json(filteredData);
+    if (dataConstants?.numericColumns?.includes(column)) {
+      const numericValue = parseFloat(value);
+      if (isNaN(numericValue)) {
+        return res.status(400).json({ message: "Invalid numeric value" });
+      }
+      switch (criteria.toLowerCase()) {
+        case "greater than":
+          filteredData = filteredData.filter(
+            (row) =>
+              row[column] !== undefined &&
+              parseFloat(row[column]) > numericValue
+          );
+          break;
+        case "less than":
+          filteredData = filteredData.filter(
+            (row) =>
+              row[column] !== undefined &&
+              parseFloat(row[column]) < numericValue
+          );
+          break;
+        case "equals":
+          filteredData = filteredData.filter(
+            (row) =>
+              row[column] !== undefined &&
+              parseFloat(row[column]) === numericValue
+          );
+          break;
+        default:
+          return res
+            .status(400)
+            .json({ message: errorMessages?.unableToFetchModels });
+      }
+    } else {
+      switch (criteria.toLowerCase()) {
+        case "contains":
+          filteredData = filteredData.filter(
+            (row) =>
+              row[column] &&
+              row[column].toLowerCase().includes(value.toLowerCase())
+          );
+          break;
+        case "equals":
+          filteredData = filteredData.filter(
+            (row) =>
+              row[column] && row[column].toLowerCase() === value.toLowerCase()
+          );
+          break;
+        case "starts with":
+          filteredData = filteredData.filter(
+            (row) =>
+              row[column] &&
+              row[column].toLowerCase().startsWith(value.toLowerCase())
+          );
+          break;
+        case "ends with":
+          filteredData = filteredData.filter(
+            (row) =>
+              row[column] &&
+              row[column].toLowerCase().toLowerCase(value.toLowerCase())
+          );
+          break;
+        case "is empty":
+          filteredData = filteredData.filter(
+            (row) => !row[column] || row[column].toLowerCase().trim() === ""
+          );
+          break;
+        default:
+          return res
+            .status(400)
+            .json({ message: errorMessages?.unableToFetchModels });
+      }
+    }
+    res.status(200).json({
+      responseCode: "00",
+      message: "Success",
+      filteredData,
+    });
+    // res.status(200).json(filteredData);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

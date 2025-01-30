@@ -1,4 +1,3 @@
-/* Global Styles  */
 @import "../../Theme/color.scss";
 
 .app-container {
@@ -53,14 +52,21 @@
   font-size: 10px;
   color: var(--secondary);
 }
+
 .info-row {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 24px;
+  align-items: center; /* Ensures vertical alignment of text and icons */
+  gap: 10px; /* Proper spacing between icon and text */
+  font-size: 16px; /* Adjusted font size */
 }
+
 .info-row p {
   margin: 0;
   color: white;
-  font-size: 14px;
+  font-size: 14px; /* Font size for text */
+}
+
+.card-info .icon {
+  font-size: 24px; /* Adjusted size for icons */
+  vertical-align: middle; /* Ensures icons are aligned properly with text */
 }

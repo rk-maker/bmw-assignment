@@ -11,9 +11,6 @@ import {
   IconButton,
 } from "@mui/material";
 import { Tune, ViewList as ViewIcon } from "@mui/icons-material";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import AGDataGrid from "../../components/AGGrid/AGDataGrid";
 import Header from "../../components/Header/Header";
 import Homepage from "../HomePage/HomePg";
@@ -29,6 +26,8 @@ import { urlConstruct } from "../../Utils/constants";
 import SearchIcon from "@mui/icons-material/Search";
 import Typography from "@mui/material/Typography";
 import { setDetails } from "../../redux/slices";
+import CloseIcon from "@mui/icons-material/Close";
+import { showLoader, hideLoader } from "../../redux/slices";
 
 function MainPage() {
   const navigate = useNavigate();
@@ -39,8 +38,6 @@ function MainPage() {
   const [limit, setLimit] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [FilteringCriteria, setFilteringCriteria] = useState("");
-  const [FilteringColumn, setFilteringColumn] = useState("");
   const [isFloatingButtonVisible, setIsFloatingButtonVisible] = useState(false);
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
@@ -48,6 +45,9 @@ function MainPage() {
   const [searchedBMWModels, setSearchedBMWModels] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [searched, setSearched] = useState(false);
+  const [appliedFilters, setAppliedFilters] = useState(false);
+  const [appliedFiltersObj, setAppliedFiltersObj] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const homeRef = useRef(null);
   const exploreRef = useRef(null);
   const aboutRef = useRef(null);
@@ -55,6 +55,7 @@ function MainPage() {
 
   useEffect(() => {
     const fetchData = async () => {
+      dispatch(showLoader());
       try {
         const response = await fetch(
           `${process.env.REACT_APP_BASE_URL}${urlConstruct?.method?.main}${urlConstruct?.endpoints?.keys}`,
@@ -77,7 +78,7 @@ function MainPage() {
           getData(pageNo);
         }
       } catch (error) {
-        console.log("erro", error);
+        dispatch(hideLoader());
       }
     };
     fetchData();
@@ -118,6 +119,9 @@ function MainPage() {
   }, []);
   //paginated api for the bmwMode Data
   const getData = async (page) => {
+    // setIsLoading(true);
+    dispatch(showLoader());
+
     try {
       const response = await fetch(
         `${process.env.REACT_APP_BASE_URL}${urlConstruct?.method?.main}/${urlConstruct?.endpoints?.pagination}?pageNo=${page}&limit=${limit}`,
@@ -132,16 +136,21 @@ function MainPage() {
       const rowData = await response.json();
 
       if (rowData?.responseCode === "00") {
-        console.log(rowData?.totalPages);
+        dispatch(hideLoader());
+
         const { bmwModels, totalPages, currentPageNo } = rowData;
         setRow(bmwModels);
         setTotalPages(totalPages);
         setCurrentPage(currentPageNo);
       }
-    } catch (error) {}
+    } catch (error) {
+      dispatch(hideLoader());
+    }
   };
   //searched by id
   const searchedByiD = async (searchQuery) => {
+    dispatch(showLoader());
+
     try {
       const response = await fetch(
         `${process.env.REACT_APP_BASE_URL}${urlConstruct?.method?.main}${urlConstruct?.endpoints?.search}?query=${searchQuery}`,
@@ -156,15 +165,18 @@ function MainPage() {
       const rowData = await response.json();
 
       if (rowData?.responseCode === "00") {
+        dispatch(hideLoader());
+
         const { searchedbmwModels } = rowData;
         setSearchedBMWModels(searchedbmwModels);
-        console.log("------------------------------------", searchedbmwModels);
         // const { bmwModels, totalPages, currentPageNo } = rowData;
         // setRow(bmwModels);
         // setTotalPages(totalPages);
         // setCurrentPage(currentPageNo);
       }
-    } catch (error) {}
+    } catch (error) {
+      dispatch(hideLoader());
+    }
   };
   const observerCallback = (entries) => {
     entries.forEach((entry) => {
@@ -214,6 +226,35 @@ function MainPage() {
     dispatch(setDetails(data));
     navigate(`/details/${data?._id}`);
   };
+  const filterByCriteria = async (filterObj) => {
+    dispatch(showLoader());
+
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_BASE_URL}${urlConstruct?.method?.main}${urlConstruct?.endpoints?.gridFilter}?column=${filterObj?.column}&criteria=${filterObj?.criteria}&value=${filterObj?.value}`,
+        {
+          method: "GET",
+        }
+      );
+      if (!response) {
+        throw new Error("Failed to fetch the data");
+      }
+
+      const rowData = await response.json();
+
+      if (rowData?.responseCode === "00") {
+        dispatch(hideLoader());
+
+        const { filteredData } = rowData;
+        setRow(filteredData);
+        setAppliedFilters(true);
+        setAppliedFiltersObj(filterObj);
+        console.log("1892738912983718973128973192873", filteredData);
+      }
+    } catch (error) {
+      dispatch(hideLoader());
+    }
+  };
   return (
     <div className="App">
       <Header scrollToSection={scrollToSection} activeSection={activeSection} />
@@ -224,25 +265,69 @@ function MainPage() {
         column={column}
         isOpen={isSideBarOpen}
         toggleSideBar={toggleSideBar}
+        applyFilter={filterByCriteria}
       />
       <section ref={exploreRef} id="explore" className="section">
-        <AGDataGrid
-          column={column}
-          row={row}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPressPreviousPage={handlePreviousPage}
-          onPressNextPage={handleNextPage}
-          isPaginated={true}
-        />
+        <h1 className="explore-cars">Explore Cars</h1>
+        <div className="explore-cars-section">
+          {appliedFilters ? (
+            <div className="applied-filter-part">
+              <div class="applied-filters">
+                <FilterListIcon className="icon" />
+
+                <p>Applied Filters</p>
+              </div>
+              <div className="filter-tab">
+                <div className="sub-tab">
+                  <span className="filter-text">
+                    {appliedFiltersObj?.column}
+                  </span>
+                </div>
+                <div className="sub-tab">
+                  <span className="filter-text">
+                    {appliedFiltersObj?.criteria}
+                  </span>
+                </div>
+                <div className="sub-tab">
+                  <span className="filter-text">
+                    {appliedFiltersObj?.value}
+                  </span>
+                </div>
+                <IconButton
+                  className="close-button"
+                  onClick={() => {
+                    setAppliedFilters(false);
+                    getData(pageNo);
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </div>
+            </div>
+          ) : null}
+          <AGDataGrid
+            column={column}
+            row={row}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPressPreviousPage={handlePreviousPage}
+            onPressNextPage={handleNextPage}
+            isPaginated={!appliedFilters}
+            loading={true}
+          />
+        </div>
       </section>
       <section ref={aboutRef} id="about" className="section">
         <Suspense fallback={<div>Loading About Section...</div>}>
+          <h1 className="explore-cars">About Me</h1>
+
           <About />
         </Suspense>
       </section>
       <section ref={contactRef} id="contact" className="section">
         <Suspense fallback={<div>Loading Contact Section...</div>}>
+          <h1 className="explore-cars">Contact Me</h1>
+
           <Contact />
         </Suspense>
       </section>
@@ -318,8 +403,6 @@ function MainPage() {
                   <IconButton
                     onClick={() => {
                       handleRowClick(product);
-                      // Open the product detail page or dialog
-                      console.log("View details for", product);
                     }}
                   >
                     <ViewIcon style={{ color: "white" }} />
