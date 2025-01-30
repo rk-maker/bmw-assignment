@@ -29,16 +29,23 @@ I follow a complete saturated system for organizing the folder structure, ensuri
  ┣ 📂assets
  ┃ ┗ 📜BMWBuilding.png
  ┣ 📂components
+ ┃ ┣ 📂AGGrid
+ ┃ ┃ ┣ 📜AGDataGrid.js
+ ┃ ┃ ┗ 📜AgGrid.css
  ┃ ┣ 📂Button
  ┃ ┃ ┣ 📜Button.css
  ┃ ┃ ┗ 📜Button.js
  ┃ ┣ 📂Header
  ┃ ┃ ┣ 📜header.css
  ┃ ┃ ┗ 📜Header.js
+ ┃ ┣ 📂Loader
+ ┃ ┃ ┣ 📜Loader.css
+ ┃ ┃ ┗ 📜Loader.js
  ┃ ┣ 📂Sidebar
  ┃ ┃ ┣ 📜SideBar.css
  ┃ ┃ ┗ 📜SideBar.js
- ┃ ┣ 📜AGDataGrid.js
+ ┃ ┣ 📂TextInput
+ ┃ ┃ ┗ 📜TextInput.js
  ┃ ┗ 📜FilterData.js
  ┣ 📂redux
  ┃ ┣ 📜slices.js
@@ -57,7 +64,8 @@ I follow a complete saturated system for organizing the folder structure, ensuri
  ┃ ┃ ┣ 📜HomePg.css
  ┃ ┃ ┗ 📜HomePg.js
  ┃ ┗ 📂MainPage
- ┃ ┃ ┗ 📜index.js
+ ┃ ┃ ┣ 📜index.js
+ ┃ ┃ ┗ 📜MainPage.css
  ┣ 📂Theme
  ┃ ┗ 📜color.scss
  ┣ 📂Utils
@@ -94,9 +102,13 @@ To Run this project run
 
 To run this project, you will need to add the following environment variables to your .env file
 
+for Backend
+
 `PORT=3000`
 
 `MONGO_CONNECTION_STRING="mongodb+srv://raffaykhan65:Zoro4250@bmwcluster.w2oot.mongodb.net/BMW_TEST?retryWrites=true&w=majority&appName=bmwCluster"`
+for Front End
+`REACT_APP_BASE_URL="http://localhost:3000/"`
 
 ### Folder Structure (Backend)
 

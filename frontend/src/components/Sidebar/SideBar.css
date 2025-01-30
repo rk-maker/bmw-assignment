@@ -60,9 +60,9 @@
   margin-top: 50px; /* Adjust this for the layout */
   position: relative; /* Needed to position the button inside it */
 }
-.column-selectior {
+/* .column-selectior {
   color: #f0f0f0;
-}
+} */
 
 /* Overlay Styles */
 #overlay {
@@ -79,41 +79,6 @@
 #overlay.visible {
   display: block;
 }
-.column-selector .MuiSelect-root {
-  background-color: transparent; /* Background color */
-  padding: 8px;
-  width: 200px;
-}
-
-.column-selector .MuiMenuItem-root {
-  font-size: 14px; /* Font size */
-  color: "white"; /* Text color */
-}
-
 .custom-input-label {
-  color: black; /* Default text color */
-  font-size: 16px; /* Font size */
-  font-weight: bold; /* Bold text */
-}
-
-.custom-input-label.Mui-focused {
-  color: green; /* Focused label color */
-}
-
-.custom-input-label.Mui-error {
-  color: red; /* Error state color (optional) */
-}
-
-.column-selector .MuiInputLabel-root {
-  color: black; /* Default color */
-}
-
-.column-selector .MuiInputLabel-root.Mui-focused {
-  color: green; /* Focused color */
-}
-
-.column-selector .MuiSelect-root {
-  border: 1px solid gray; /* Example styling for Select */
-  border-radius: 4px;
-  padding: 8px;
+  color: wheat;
 }

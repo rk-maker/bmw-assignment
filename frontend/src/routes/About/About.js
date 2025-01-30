@@ -5,7 +5,6 @@ const About = () => {
   return (
     <div className="about-section">
       <div className="about-content">
-        <h1>About Me</h1>
         <p className="about-text">
           Hello! I'm a passionate developer with a knack for creating
           user-friendly, modern web and mobile applications. My expertise lies

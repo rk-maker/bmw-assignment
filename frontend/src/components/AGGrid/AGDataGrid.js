@@ -5,11 +5,12 @@ import { AgGridReact } from "ag-grid-react";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 
 import { useNavigate } from "react-router-dom";
-import { setDetails } from "../redux/slices";
-import { FilterCriteria } from "../Utils/constants";
+import { setDetails } from "../../redux/slices";
+import { FilterCriteria } from "../../Utils/constants";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Button from "@mui/material/Button";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import "./AgGrid.css";
 import {
   ClientSideRowModelModule,
   NumberEditorModule,
@@ -25,8 +26,8 @@ import {
   PivotModule,
   SideBarModule,
 } from "ag-grid-enterprise";
-import FilterData from "./FilterData";
-import CustomButton from "./Button/Button";
+import FilterData from "../FilterData";
+import CustomButton from "../Button/Button";
 ModuleRegistry.registerModules([
   TextEditorModule,
   TextFilterModule,
@@ -49,6 +50,7 @@ const AGDataGrid = ({
   currentPage,
   onPressPreviousPage,
   onPressNextPage,
+  isPaginated = false,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -83,7 +85,7 @@ const AGDataGrid = ({
     sidePanelBorder: false,
     spacing: 8,
     wrapperBorder: false,
-    wrapperBorderRadius: 0,
+    wrapperBorderRadius: 15,
     inputBorderRadius: 50,
     textColor: "var(--secondary-txt-color)",
   });
@@ -141,37 +143,43 @@ const AGDataGrid = ({
         />
       </div>
       {/* Button container */}
-      <div
-        className="flex items-center"
-        style={{
-          alignItems: "center",
-          display: "flex",
-          justifyContent: "flex-end", // Align content to the right
-          marginTop: "10px", // Space between grid and buttons
-          width: "90%", // Matches the grid width
-          marginLeft: "auto", // Centers the button container relative to grid
-          marginRight: "auto", // Centers the button container relative to grid
-          gap: "10px",
-        }}
-      >
-        <CustomButton
-          onClick={onPressPreviousPage}
-          disabled={currentPage === 1}
-          width={"120px"}
+      {isPaginated ? (
+        <div
+          className="flex items-center"
+          style={{
+            alignItems: "center",
+            display: "flex",
+            justifyContent: "flex-end",
+            marginTop: "10px",
+            width: "90%",
+            marginLeft: "auto",
+            marginRight: "auto",
+            gap: "10px",
+          }}
         >
-          Previous
-        </CustomButton>
-        <div className="text-lg" style={{ color: "var(--primary-txt-color)" }}>
-          Page <strong>{currentPage}</strong> of <strong>{totalPages}</strong>
+          <CustomButton
+            onClick={onPressPreviousPage}
+            disabled={currentPage === 1}
+            width={"120px"}
+          >
+            Previous
+          </CustomButton>
+          <div
+            className="text-lg"
+            style={{ color: "var(--primary-txt-color)" }}
+          >
+            Page <strong>{currentPage}</strong> of <strong>{totalPages}</strong>
+          </div>
+          <CustomButton
+            onClick={onPressNextPage}
+            width={"120px"}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </CustomButton>
         </div>
-        <CustomButton
-          onClick={onPressNextPage}
-          width={"120px"}
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </CustomButton>
-      </div>
+      ) : null}
+      <div style={{ height: "40px" }}></div>
     </div>
   );
 };

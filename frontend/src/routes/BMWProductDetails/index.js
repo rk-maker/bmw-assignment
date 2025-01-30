@@ -11,7 +11,7 @@ import {
 import "./bmw-style.css";
 
 function BMWProdDet() {
-  const details = useSelector((state) => state.details.details);
+  const details = useSelector((state) => state.bmwModelDetails.details);
   const { id } = useParams();
 
   if (!details) {
@@ -37,31 +37,31 @@ function BMWProdDet() {
             <div className="card-info">
               <h1>{details?.Brand}</h1>
               <div className="info-row">
-                <DirectionsCar className="icon" />
+                {/* <DirectionsCar className="icon" /> */}
                 <p>Model: {details?.Model}</p>
               </div>
               <div className="info-row">
-                <Speed className="icon" />
+                {/* <Speed className="icon" /> */}
                 <p>Efficiency: {details?.Efficiency_Whkm} Wh/km</p>
               </div>
               <div className="info-row">
-                <Speed className="icon" />
+                {/* <Speed className="icon" /> */}
                 <p>Fast Charge: {details?.Fastcharge_KmH} km/h</p>
               </div>
               <div className="info-row">
-                <EventSeat className="icon" />
+                {/* <EventSeat className="icon" /> */}
                 <p>Seats: {details?.Seats}</p>
               </div>
               <div className="info-row">
-                <Euro className="icon" />
+                {/* <Euro className="icon" /> */}
                 <p>Price: €{details?.PriceEuro}</p>
               </div>
               <div className="info-row">
-                <Category className="icon" />
+                {/* <Category className="icon" /> */}
                 <p>Body Style: {details?.BodyStyle}</p>
               </div>
               <div className="info-row">
-                <Category className="icon" />
+                {/* <Category className="icon" /> */}
                 <p>Segment: {details?.Segment}</p>
               </div>
             </div>
