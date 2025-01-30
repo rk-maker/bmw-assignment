@@ -38,14 +38,14 @@ const SideBar = ({ column, isOpen, toggleSideBar }) => {
           <FormControl
             className="column-selector"
             variant="standard"
-            sx={{ m: 1, minWidth: 120 }}
+            sx={{ m: 1, minWidth: 250 }}
             size="small"
           >
             <InputLabel id="custom-input-label">Column</InputLabel>
             <Select
               className="column-selectior"
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
+              // labelId="demo-simple-select-label"
+              // id="demo-simple-select"
               value={FilteringColumn}
               label="Column"
               onChange={handleFilterColumn}
@@ -62,7 +62,7 @@ const SideBar = ({ column, isOpen, toggleSideBar }) => {
           </FormControl>
           <FormControl
             variant="standard"
-            sx={{ m: 1, minWidth: 120 }}
+            sx={{ m: 1, minWidth: 250 }}
             className="column-selector"
           >
             <InputLabel id="demo-simple-select-label">Criteria</InputLabel>

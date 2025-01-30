@@ -9,6 +9,7 @@ function App() {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/details/:id" element={<BMWProdDet />} />
+        <Route path="/searchedModels" element={<BMWProdDet />} />
       </Routes>
     </Router>
   );
